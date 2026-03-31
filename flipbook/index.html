@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogo</title>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+
+<style>
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:#252121;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:sans-serif;
+}
+
+/* contenitore flipbook */
+#flipbook{
+  display:flex;
+  margin: auto;
+  justify-content:center;
+  align-items:center;
+}
+
+/* pagina */
+.page{
+  background:#000000;
+}
+
+/* immagine pagina */
+.page img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="flipbook"></div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function(){
+
+  const flipbookElement = document.getElementById('flipbook');
+  const totalPages =10;
+
+  /* dimensioni responsive */
+  let width = window.innerWidth * 0.45;
+  let height = width * 1.414;
+
+  /* limite massimo per schermi grandi */
+  if(width > 560){
+    width = 560;
+    height = width * 1.414;
+  }
+  /* limite massimo per schermi piccoli */
+   /*if(width > 320){
+    width = 320;
+    height = width * 1.414;
+  }
+
+  /* crea pagine */
+  for(let i=1;i<=totalPages;i++){
+
+    const page = document.createElement("div");
+    page.classList.add("page");
+
+    const img = document.createElement("img");
+    img.src = `page${i}.jpg`;
+
+    page.appendChild(img);
+    flipbookElement.appendChild(page);
+
+  }
+
+  /* crea flipbook */
+  const pageFlip = new St.PageFlip(flipbookElement, {
+
+    width: width,
+    height: height,
+
+    showCover: true,
+    startPage: 0,
+
+    /* doppia pagina desktop */
+    spread: true,
+
+    drawShadow: true,
+
+    mobileScrollSupport: true
+
+  });
+
+  pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+});
+
+
+/* ridimensiona automaticamente */
+window.addEventListener("resize", () => {
+  location.reload();
+});
+
+</script>
+
+</body>
+</html>
