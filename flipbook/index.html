@@ -16,17 +16,16 @@ html,body{
   width:100%;
   height:100%;
   background:#252121;
-  display:flex;
-  justify-content:center;
-  align-items:center;
   font-family:sans-serif;
+  overflow:hidden; /* 🔥 elimina spazio sotto */
 }
 
-/* contenitore flipbook */
+/* contenitore centrato perfetto */
 #flipbook{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
 }
 
 /* pagina */
@@ -34,7 +33,7 @@ html,body{
   background:#000000;
 }
 
-/* immagine pagina */
+/* immagini */
 .page img{
   width:100%;
   height:100%;
@@ -62,17 +61,19 @@ document.addEventListener('DOMContentLoaded', function(){
   let width, height;
 
   if (isMobile()) {
-    // 📱 MOBILE → proporzione perfetta senza spazio nero
+
+    const vh = window.innerHeight;
+
     width = window.innerWidth;
     height = width * 1.414;
 
-    if (height > window.innerHeight) {
-      height = window.innerHeight;
+    if (height > vh) {
+      height = vh;
       width = height / 1.414;
     }
 
   } else {
-    // 🖥️ DESKTOP → IDENTICO al tuo originale
+
     width = window.innerWidth * 0.45;
     height = width * 1.414;
 
@@ -80,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function(){
       width = 560;
       height = width * 1.414;
     }
+
   }
 
   /* crea pagine */
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function(){
     flipbookElement.appendChild(page);
   }
 
-  /* crea flipbook */
+  /* inizializza flipbook */
   const pageFlip = new St.PageFlip(flipbookElement, {
 
     width: width,
@@ -103,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function(){
     showCover: true,
     startPage: 0,
 
-    /* mobile vs desktop */
     size: isMobile() ? "stretch" : "fixed",
     usePortrait: isMobile(),
     spread: !isMobile(),
