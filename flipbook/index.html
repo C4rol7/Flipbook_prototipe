@@ -62,9 +62,15 @@ document.addEventListener('DOMContentLoaded', function(){
   let width, height;
 
   if (isMobile()) {
-    // 📱 MOBILE → schermo pieno
+    // 📱 MOBILE → proporzione perfetta senza spazio nero
     width = window.innerWidth;
-    height = window.innerHeight;
+    height = width * 1.414;
+
+    if (height > window.innerHeight) {
+      height = window.innerHeight;
+      width = height / 1.414;
+    }
+
   } else {
     // 🖥️ DESKTOP → IDENTICO al tuo originale
     width = window.innerWidth * 0.45;
@@ -97,10 +103,8 @@ document.addEventListener('DOMContentLoaded', function(){
     showCover: true,
     startPage: 0,
 
-    /* 👇 fondamentale */
+    /* mobile vs desktop */
     size: isMobile() ? "stretch" : "fixed",
-
-    /* comportamento diverso */
     usePortrait: isMobile(),
     spread: !isMobile(),
 
