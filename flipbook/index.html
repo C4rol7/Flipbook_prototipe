@@ -1,5 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogo</title>
+
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
+
+<style>
+
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:#252121;
+  font-family:sans-serif;
+  overflow:hidden; /* elimina spazio sotto */
+}
+
+/* contenitore centrato perfetto */
+#flipbook{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+}
+
+/* pagina */
+.page{
+  background:#000000;
+}
+
+/* immagini */
+.page img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="flipbook"></div>
+
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+
+document.addEventListener('DOMContentLoaded', function(){
 
   const flipbookElement = document.getElementById('flipbook');
   const totalPages = 10;
@@ -8,70 +59,68 @@ document.addEventListener('DOMContentLoaded', function() {
     return window.innerWidth <= 768;
   }
 
-  function calculateSize() {
-    let width, height;
+  let width, height;
 
-    if (isMobile()) {
-      const vh = window.innerHeight;
-      width = window.innerWidth;
-      height = width * 1.414;
-      if (height > vh) {
-        height = vh;
-        width = height / 1.414;
-      }
-    } else {
-      width = window.innerWidth * 0.45;
-      height = width * 1.414;
-      if (width > 560) {
-        width = 560;
-        height = width * 1.414;
-      }
+  if (isMobile()) {
+
+    const vh = window.innerHeight;
+
+    width = window.innerWidth;
+    height = width * 1.414;
+
+    if (height > vh) {
+      height = vh;
+      width = height / 1.414;
     }
 
-    return { width, height };
+  } else {
+
+    width = window.innerWidth * 0.45;
+    height = width * 1.414;
+
+    if (width > 560) {
+      width = 560;
+      height = width * 1.414;
+    }
+
   }
 
   // crea pagine
-  for (let i = 1; i <= totalPages; i++) {
+  for(let i=1;i<=totalPages;i++){
     const page = document.createElement("div");
     page.classList.add("page");
+
     const img = document.createElement("img");
     img.src = `page${i}.jpg`;
+
     page.appendChild(img);
     flipbookElement.appendChild(page);
   }
 
-  // dimensioni iniziali
-  const { width, height } = calculateSize();
-
-  // inizializza flipbook con spread dinamico
+  // crea flipbook
   const pageFlip = new St.PageFlip(flipbookElement, {
+
     width: width,
     height: height,
     showCover: true,
     startPage: 0,
     drawShadow: true,
-    spread: !isMobile(),       // desktop = spread, mobile = singola pagina
-    usePortrait: isMobile(),
+
+    // desktop → doppia pagina
+    spread: !isMobile(),
+    usePortrait: isMobile(), // mobile singola pagina
+
+    // animazione e interazione
     size: isMobile() ? "stretch" : "fixed",
-    mobileScrollSupport: true,
-    clickEventForwarding: true
+    mobileScrollSupport: true, // abilita drag/sfogliamento touch
+    clickEventForwarding: true  // permette di interagire con le pagine
   });
 
   pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-  // aggiorna automaticamente se l’utente ruota o ridimensiona
-  window.addEventListener("resize", () => {
-    const { width, height } = calculateSize();
-
-    pageFlip.update({
-      width: width,
-      height: height,
-      spread: !isMobile(),
-      usePortrait: isMobile(),
-      size: isMobile() ? "stretch" : "fixed"
-    });
-  });
-
 });
+
 </script>
+
+</body>
+</html>
