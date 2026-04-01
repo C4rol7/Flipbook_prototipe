@@ -25,7 +25,6 @@ html,body{
 /* contenitore flipbook */
 #flipbook{
   display:flex;
-  margin: auto;
   justify-content:center;
   align-items:center;
 }
@@ -54,26 +53,31 @@ html,body{
 document.addEventListener('DOMContentLoaded', function(){
 
   const flipbookElement = document.getElementById('flipbook');
-  const totalPages =10;
+  const totalPages = 10;
 
-  /* dimensioni responsive */
-  let width = window.innerWidth * 0.45;
-  let height = width * 1.414;
-
-  /* limite massimo per schermi grandi */
-  if(width > 560){
-    width = 560;
-    height = width * 1.414;
+  function isMobile() {
+    return window.innerWidth <= 768;
   }
-  /* limite massimo per schermi piccoli */
-   /*if(width > 320){
-    width = 320;
+
+  let width, height;
+
+  if (isMobile()) {
+    // 📱 MOBILE → schermo pieno
+    width = window.innerWidth;
+    height = window.innerHeight;
+  } else {
+    // 🖥️ DESKTOP → IDENTICO al tuo originale
+    width = window.innerWidth * 0.45;
     height = width * 1.414;
+
+    if (width > 560) {
+      width = 560;
+      height = width * 1.414;
+    }
   }
 
   /* crea pagine */
   for(let i=1;i<=totalPages;i++){
-
     const page = document.createElement("div");
     page.classList.add("page");
 
@@ -82,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     page.appendChild(img);
     flipbookElement.appendChild(page);
-
   }
 
   /* crea flipbook */
@@ -94,23 +97,20 @@ document.addEventListener('DOMContentLoaded', function(){
     showCover: true,
     startPage: 0,
 
-    /* doppia pagina desktop */
-    spread: true,
+    /* 👇 fondamentale */
+    size: isMobile() ? "stretch" : "fixed",
+
+    /* comportamento diverso */
+    usePortrait: isMobile(),
+    spread: !isMobile(),
 
     drawShadow: true,
-
     mobileScrollSupport: true
 
   });
 
   pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-});
-
-
-/* ridimensiona automaticamente */
-window.addEventListener("resize", () => {
-  location.reload();
 });
 
 </script>
