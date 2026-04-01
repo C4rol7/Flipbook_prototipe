@@ -106,6 +106,7 @@ document.addEventListener('DOMContentLoaded', function(){
     // desktop → doppia pagina, mobile → singola
     spread: !isMobile() ? true : false,
     usePortrait: isMobile(),
+    maxSpreadWidth: 768, // forza singola pagina sotto 768px
 
     // animazione e interazione
     size: isMobile() ? "stretch" : "fixed",
