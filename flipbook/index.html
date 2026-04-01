@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function(){
   let width, height;
 
   if (isMobile()) {
-
+    // MOBILE: una sola pagina
     const vh = window.innerHeight;
 
     width = window.innerWidth;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function(){
     }
 
   } else {
-
+    // DESKTOP: doppia pagina
     width = window.innerWidth * 0.45;
     height = width * 1.414;
 
@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', function(){
       width = 560;
       height = width * 1.414;
     }
-
   }
 
   // crea pagine
@@ -96,23 +95,22 @@ document.addEventListener('DOMContentLoaded', function(){
     flipbookElement.appendChild(page);
   }
 
-  // crea flipbook
+  // inizializza flipbook
   const pageFlip = new St.PageFlip(flipbookElement, {
-
     width: width,
     height: height,
     showCover: true,
     startPage: 0,
     drawShadow: true,
 
-    // desktop → doppia pagina
-    spread: !isMobile(),
-    usePortrait: isMobile(), // mobile singola pagina
+    // desktop → doppia pagina, mobile → singola
+    spread: !isMobile() ? true : false,
+    usePortrait: isMobile(),
 
     // animazione e interazione
     size: isMobile() ? "stretch" : "fixed",
-    mobileScrollSupport: true, // abilita drag/sfogliamento touch
-    clickEventForwarding: true  // permette di interagire con le pagine
+    mobileScrollSupport: true, // drag touch
+    clickEventForwarding: true  // interazione
   });
 
   pageFlip.loadFromHTML(document.querySelectorAll('.page'));
