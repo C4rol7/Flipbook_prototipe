@@ -17,7 +17,7 @@ html,body{
   height:100%;
   background:#252121;
   font-family:sans-serif;
-  overflow:hidden; /* 🔥 elimina spazio sotto */
+  overflow:hidden; /* elimina spazio sotto */
 }
 
 /* contenitore centrato perfetto */
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   }
 
-  /* crea pagine */
+  // crea pagine
   for(let i=1;i<=totalPages;i++){
     const page = document.createElement("div");
     page.classList.add("page");
@@ -96,22 +96,23 @@ document.addEventListener('DOMContentLoaded', function(){
     flipbookElement.appendChild(page);
   }
 
-  /* inizializza flipbook */
+  // crea flipbook
   const pageFlip = new St.PageFlip(flipbookElement, {
 
     width: width,
     height: height,
-
     showCover: true,
     startPage: 0,
-
-    size: isMobile() ? "stretch" : "fixed",
-    usePortrait: isMobile(),
-    spread: !isMobile(),
-
     drawShadow: true,
-    mobileScrollSupport: true
 
+    // desktop → doppia pagina
+    spread: !isMobile(),
+    usePortrait: isMobile(), // mobile singola pagina
+
+    // animazione e interazione
+    size: isMobile() ? "stretch" : "fixed",
+    mobileScrollSupport: true, // abilita drag/sfogliamento touch
+    clickEventForwarding: true  // permette di interagire con le pagine
   });
 
   pageFlip.loadFromHTML(document.querySelectorAll('.page'));
