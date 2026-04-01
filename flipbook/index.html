@@ -11,17 +11,23 @@ document.addEventListener('DOMContentLoaded', function(){
   let width, height;
 
   function calculateDimensions() {
+    const vw = window.innerWidth;
     const vh = window.innerHeight;
 
     if (isMobile()) {
-      width = window.innerWidth;
+      // mobile: singola pagina, grande quanto possibile
+      width = vw * 0.95; // lascia un piccolo margine
       height = width * 1.414;
-      if (height > vh) {
-        height = vh;
+
+      // se l'altezza supera la finestra, ridimensiona in base all'altezza
+      if (height > vh * 0.95) {
+        height = vh * 0.95;
         width = height / 1.414;
       }
+
     } else {
-      width = window.innerWidth * 0.45;
+      // desktop: doppia pagina
+      width = vw * 0.45;
       height = width * 1.414;
       if (width > 560) {
         width = 560;
@@ -52,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function(){
     showCover: true,
     startPage: 0,
     drawShadow: true,
-    spread: !isMobile(),      // desktop → doppia pagina, mobile → singola
-    usePortrait: isMobile(),  // mobile singola pagina
+    spread: !isMobile(),      // desktop → doppia pagina
+    usePortrait: isMobile(),  // mobile → singola pagina
     size: isMobile() ? "stretch" : "fixed",
     mobileScrollSupport: true,
     clickEventForwarding: true
@@ -61,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   pageFlip.loadFromHTML(document.querySelectorAll('.page'));
 
-  // aggiorna layout se ridimensiona
+  // aggiorna layout se ridimensiona o ruota
   window.addEventListener('resize', () => {
     calculateDimensions();
     pageFlip.updateFromHTML(document.querySelectorAll('.page'));
